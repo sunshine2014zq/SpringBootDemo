@@ -21,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @date 2019/1/9 16:05
  */
 @Configuration
-public class HelloConfiguration implements WebMvcConfigurer {
+public class HelloConfig implements WebMvcConfigurer {
 
     @Autowired
     private HandlerInterceptor helloInterceptor;

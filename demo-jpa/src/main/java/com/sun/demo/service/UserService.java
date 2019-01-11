@@ -3,6 +3,7 @@ package com.sun.demo.service;
 import com.sun.demo.entity.UserEntity;
 import com.sun.demo.jpa.UserJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,7 +27,9 @@ public class UserService implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("为查找到用户：" + s);
         }
-        return user;
+        return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
+
+
 
 }

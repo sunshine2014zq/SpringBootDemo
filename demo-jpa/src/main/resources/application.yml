@@ -48,6 +48,8 @@ spring:
 #    aop-patterns:  # Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
 
   jpa:
+    open-in-view: true
+    properties.hibernate.enable_lazy_load_no_trans: true
     database: mysql
     show-sql: true
 
@@ -56,3 +58,7 @@ spring:
       secret: yoursecret
       expiration: 604800
       tokenHead: "Bearer"
+
+logging:
+  level:
+    root: debug

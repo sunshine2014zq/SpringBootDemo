@@ -31,16 +31,19 @@ public class UserEntity implements Serializable,UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = {
-                    @JoinColumn(name = "user_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "role_id")
-            }
-    )
+//    @ManyToMany
+//    @JoinTable(
+//            name = "user_role",
+//            joinColumns = {
+//                    @JoinColumn(name = "user_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "role_id")
+//            }
+//    )
+
+    @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",joinColumns = @JoinColumn(name="user_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
     private List<RoleEntity> roles;
 
     @Override
