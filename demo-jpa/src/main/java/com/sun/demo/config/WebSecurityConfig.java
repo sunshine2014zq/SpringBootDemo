@@ -29,22 +29,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("login.html", "/test.html").permitAll()
+                .antMatchers("login.html","/login", "/test.html").permitAll()
+//                .antMatchers("/druid").hasAnyRole("admin")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
 
                 .loginPage("/login.html")
-//                .loginProcessingUrl("/login")
-//                .failureUrl("/login-err.html")
+                .loginProcessingUrl("/login")
+                .failureUrl("/login-err.html")
+//                .successForwardUrl("/index.html")
 
                 .permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password("password").roles("USER");
+        auth.userDetailsService(userService);
     }
 
     @Bean
