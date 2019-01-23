@@ -12,6 +12,5 @@ public class PasswordTest {
         System.out.println(hashpw);
         boolean checkpw = BCrypt.checkpw("123456", hashpw);
         System.out.println(checkpw);
-
     }
 }

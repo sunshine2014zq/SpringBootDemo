@@ -1,3 +1,9 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+
 spring:
   #https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
   datasource.druid:
