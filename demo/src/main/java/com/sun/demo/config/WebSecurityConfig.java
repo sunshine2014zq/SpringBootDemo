@@ -39,6 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("login.html","/login", "/test.html").permitAll()
 //                .antMatchers("/druid").hasAnyRole("admin")
                 .anyRequest().authenticated()
+                //注销
+                .and().logout().permitAll()
+
                 .and()
                 .formLogin()
 
