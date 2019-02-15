@@ -3,7 +3,7 @@
  */
 
 var baseUtils = {
-    //判断表单元素的值是否为空
+    //判断对象的value是否为空--item : 使用jquery选择器
     isEmpty : function (item) {
         if (item.val() == '' || item.val() == undefined) {
             return true;
