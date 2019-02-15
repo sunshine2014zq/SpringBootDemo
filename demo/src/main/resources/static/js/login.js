@@ -6,6 +6,6 @@
 $(".loginBtn").click(function () {
     //空验证-账户
     if(baseUtils.isEmpty($(".username"))){
-        layer.msg("账号不能为空");
+        baseUtils.tip("账号不能为空",2,2000);
     }
 });
