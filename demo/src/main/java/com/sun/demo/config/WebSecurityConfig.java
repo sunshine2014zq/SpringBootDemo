@@ -36,7 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("login.html","/login", "/test.html").permitAll()
+                .antMatchers("login.html","/login", "/test.html","/static/**","/temp/**","/lib/**")
+                .permitAll()
 //                .antMatchers("/druid").hasAnyRole("admin")
                 .anyRequest().authenticated()
                 //注销
