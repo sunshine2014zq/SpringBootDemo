@@ -1,5 +1,7 @@
 /**
  * Created by sun on 2019/2/15 16:24
+ * use jquery-1.9.1
+ * use layer-2.4
  */
 
 var baseUtils = {
