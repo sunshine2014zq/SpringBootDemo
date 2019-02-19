@@ -1,5 +1,10 @@
 package com.sun.demo.handler;
 
+import com.alibaba.druid.support.json.JSONParser;
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.druid.support.json.JSONWriter;
+import com.alibaba.fastjson.JSON;
+import com.sun.demo.entity.LoginEntity;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -21,8 +26,10 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         if (httpServletRequest.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 || httpServletRequest.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
             //JSON请求处理返回JSON
-            httpServletResponse.setContentType("application/json;charset=utf-8");
-            httpServletResponse.getWriter().println("success");
+            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            LoginEntity entity = new LoginEntity(true, "登录成功!欢迎" + authentication.getName());
+            String str = JSON.toJSONString(entity);
+            httpServletResponse.getWriter().println(str);
         } else {
             //非JSON请求采用默认处理-跳转页面
             super.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
