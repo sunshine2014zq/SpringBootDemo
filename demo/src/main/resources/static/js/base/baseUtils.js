@@ -15,11 +15,53 @@ var baseUtils = {
     //1:成功 2:错误 3：疑问 4：锁定 5：哭脸，6：笑脸 7：警告
     tip: function (msg, icon, time) {
         layer.msg(msg, {icon: icon, time: time});
+    },
+
+    /**
+     * 包含加载遮罩层的post请求
+     */
+    post: function (vue, url, data, successCallBack, failCallBack) {
+        var loading = layer.load(0, {shade: [0.5, '#949494']}); //0代表加载的风格，支持0-2
+        vue.$http.post(url, data).then(function (response) {
+            layer.close(loading);
+            //回调
+            successCallBack(response);
+        }, function (response) {
+            layer.close(loading);
+            //回调
+            failCallBack(response);
+        });
+    },
+
+    /**
+     * 包含加载遮罩层的get请求
+     */
+    get: function (vue, url, successCallBack, failCallBack) {
+        var loading = layer.load(0, {shade: [0.5, '#949494']}, "#addPanel"); //0代表加载的风格，支持0-2
+        vue.get(url).then(function (response) {
+            //回调
+            successCallBack(response);
+            layer.close(loading);
+        }, function (response) {
+            //回调
+            failCallBack(response);
+            layer.close(loading);
+        });
     }
 
+}
 
 
-
-
-
+/**
+ * jQuery库扩展--序列化为对象
+ * @returns {Object}
+ */
+jQuery.prototype.serializeObject=function(){
+    var obj=new Object();
+    $.each(this.serializeArray(),function(index,param){
+        if(!(param.name in obj)){
+            obj[param.name]=param.value;
+        }
+    });
+    return obj;
 }
