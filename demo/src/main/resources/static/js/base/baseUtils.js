@@ -19,6 +19,7 @@ var baseUtils = {
 
     /**
      * 包含加载遮罩层的post请求
+     * failCallBack 为空时提示“系统繁忙!请稍后重试”,否则执行回调failCallBack
      */
     post: function (vue, url, data, successCallBack, failCallBack) {
         var loading = layer.load(0, {shade: [0.5, '#949494']}); //0代表加载的风格，支持0-2
@@ -27,9 +28,14 @@ var baseUtils = {
             //回调
             successCallBack(response);
         }, function (response) {
+            console.log(response)
             layer.close(loading);
-            //回调
-            failCallBack(response);
+            if($.isFunction(failCallBack)){
+                //回调
+                failCallBack(response)
+            }else {
+                baseUtils.tip("系统繁忙!请稍后重试",2,1500);
+            }
         });
     },
 
@@ -43,9 +49,14 @@ var baseUtils = {
             successCallBack(response);
             layer.close(loading);
         }, function (response) {
-            //回调
-            failCallBack(response);
+            console.log(response)
             layer.close(loading);
+            if($.isFunction(failCallBack)){
+                //回调
+                failCallBack(response)
+            }else {
+                baseUtils.tip("系统繁忙!请稍后重试",2,1500);
+            }
         });
     }
 
