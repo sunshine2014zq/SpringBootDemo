@@ -1,5 +1,8 @@
 package com.sun.demo.config;
 
+import com.sun.demo.filter.CustomAuthenticationFilter;
+import com.sun.demo.handler.CustomAuthenticationFailureHandler;
+import com.sun.demo.handler.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,16 +10,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * security安全配置
@@ -40,33 +37,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         , "/static/**", "/temp/**", "/lib/**"
                         , "/js/**")
                 .permitAll()
-//                .antMatchers("/druid").hasAnyRole("admin")
                 .anyRequest().authenticated()
                 //注销
                 .and().logout().permitAll()
-
                 .and()
+                .addFilterAt(getAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-
                 .loginPage("/login.html")
                 .loginProcessingUrl("/login")
-//                .failureHandler(new AuthenticationFailureHandler() {
-//                    @Override
-//                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-//
-//                    }
-//                })
-//                .failureUrl("/login-err.html")
-//                .successForwardUrl("/index.html")
-
                 .permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password("password").roles("USER");
         auth.userDetailsService(userService);
+    }
+
+    private UsernamePasswordAuthenticationFilter getAuthenticationFilter() throws Exception {
+        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
+        filter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
+        filter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
+        //这句很关键，重用WebSecurityConfigurerAdapter配置的AuthenticationManager
+        //不然要自己组装AuthenticationManager
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
     }
 
     @Bean
